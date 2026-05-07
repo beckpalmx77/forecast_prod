@@ -194,40 +194,58 @@ $conn = null;
     <!-- Brand Summary Modal -->
     <div class="modal fade" id="brandSummaryModal" tabindex="-1" aria-labelledby="brandSummaryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="brandSummaryModalLabel">สรุปยอดรวม (AT + LEAO + LLIT)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content" style="border-radius:0;">
+                <div class="modal-header bg-primary text-white" style="border-radius:0;">
+                    <h5 class="modal-title" id="brandSummaryModalLabel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-line me-2" viewBox="0 0 16 16">
+                            <path d="M0 0h1v16H0V0zm1 2h2v12H1V2zm3 3h2v9H4V5zm3 2h2v7H7V7zm3-4h2v11h-2V3zm3 6h2v5h-2V9z"/>
+                        </svg>
+                        รายละเอียดรายงานยอดขาย - <?php echo htmlspecialchars($ar_name ?? ''); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped" id="brandSummaryTable">
-                                <thead>
-                                    <tr>
-                                        <th>ยี่ห้อ</th>
-                                        <th>ค่าเฉลี่ยต่อเดือน<br>(12 เดือนปีที่แล้ว)</th>
-                                        <th>ค่า MIN<br>(12 เดือนปีที่แล้ว)</th>
-                                        <th>ค่า MAX<br>(12 เดือนปีที่แล้ว)</th>
-                                        <th>เป้ารายเดือน</th>
-                                        <th>ยอดขายเดือน <?php echo $thai_months[$month1['month']].' '.$month1['year']; ?></th>
-                                        <th>ยอดขายเดือน <?php echo $thai_months[$month2['month']].' '.$month2['year']; ?></th>
-                                        <th>ยอดขายเดือน <?php echo $thai_months[$month3['month']].' '.$month3['year']; ?></th>
-                                        <th>ค่าเฉลี่ย 3 เดือน</th>
-                                        <th>คาดการณ์ยอดขาย <?php echo $thai_months[$selected_month] ?? ''; ?></th>
-                                        <th>เปรียบเทียบฯ<br>(คาดการณ์ - ค่าเฉลี่ย 3 เดือน)</th>
-                                        <th>เปรียบเทียบยอดขาย%<br>จากค่าเฉลี่ย</th>
-                                    </tr>
-                                </thead>
+                <div class="modal-body" style="padding:1rem; background-color:#f8f9fa;">
+                    <div class="card shadow" style="height:75vh;">
+                        <div class="card-body" style="height:100%; padding:0; overflow:hidden;">
+                            <div style="height:100%; overflow:auto; padding:1rem;">
+                             <table class="table table-bordered table-hover" id="brandSummaryTable" style="margin-bottom:0;">
+                                 <thead class="table-dark text-white" style="position:sticky; top:0; z-index:1;">
+                                     <tr>
+                                         <th class="align-middle">ยี่ห้อ</th>
+                                         <th class="text-center">ค่าเฉลี่ยต่อเดือน<br><small>(12 เดือนปีที่แล้ว)</small></th>
+                                         <th class="text-center">ค่า MIN<br><small>(12 เดือนปีที่แล้ว)</small></th>
+                                         <th class="text-center">ค่า MAX<br><small>(12 เดือนปีที่แล้ว)</small></th>
+                                         <th class="text-center">เป้ารายเดือน</th>
+                                         <th class="text-center">ยอดขายเดือน<br><?php echo $thai_months[$month1['month']].' '.$month1['year']; ?></th>
+                                         <th class="text-center">ยอดขายเดือน<br><?php echo $thai_months[$month2['month']].' '.$month2['year']; ?></th>
+                                         <th class="text-center">ยอดขายเดือน<br><?php echo $thai_months[$month3['month']].' '.$month3['year']; ?></th>
+                                         <th class="text-center">ค่าเฉลี่ย 3 เดือน</th>
+                                         <th class="text-center">คาดการณ์ยอดขาย<br><?php echo $thai_months[$selected_month].' '.$selected_year; ?></th>
+                                         <th class="text-center">เปรียบเทียบฯ<br><small>(คาดการณ์ - ค่าเฉลี่ย 3 เดือน)</small></th>
+                                         <th class="text-center">เปรียบเทียบยอดขาย%<br><small>จากค่าเฉลี่ย</small></th>
+                                     </tr>
+                                 </thead>
                                 <tbody></tbody>
 
                             </table>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                    <button type="button" class="btn btn-success" id="saveBrandSummaryBtn">บันทึก</button>
+                <div class="modal-footer" style="background-color:#f8f9fa; border-top:1px solid #dee2e6;">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        ปิด
+                    </button>
+                    <button type="button" class="btn btn-success" id="saveBrandSummaryBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle me-1" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                        </svg>
+                        บันทึก
+                    </button>
                 </div>
             </div>
         </div>
@@ -347,17 +365,22 @@ $conn = null;
                     }
 
                     // Now all rows are in DOM, read values
+                    var uniqueTarget = null;
                     table.$('tr').each(function() {
                         var $tds = $(this).find('td');
                         if ($tds.length === 0) return;
                         var brand = $.trim($tds.eq(4).text());
                         if (brands.indexOf(brand) === -1) return;
 
-                        // Add to per-brand sum
+                        // Get target value - assume all AT, LEAO, LLIT have same target
+                        if (uniqueTarget === null) {
+                            uniqueTarget = getNum($tds.eq(10));
+                        }
+
+                        // Add to per-brand sum (excluding target)
                         brandSums[brand].avg += getNum($tds.eq(7));
                         brandSums[brand].min += getNum($tds.eq(8));
                         brandSums[brand].max += getNum($tds.eq(9));
-                        brandSums[brand].target += getNum($tds.eq(10));
                         brandSums[brand].m1 += getNum($tds.eq(11));
                         brandSums[brand].m2 += getNum($tds.eq(12));
                         brandSums[brand].m3 += getNum($tds.eq(13));
@@ -365,11 +388,10 @@ $conn = null;
                         brandSums[brand].forecast += getNum($tds.eq(15));
                         brandSums[brand].compare1 += getNum($tds.eq(16));
 
-                        // Add to total sum
+                        // Add to total sum (excluding target - use uniqueTarget instead)
                         totalSum.avg += getNum($tds.eq(7));
                         totalSum.min += getNum($tds.eq(8));
                         totalSum.max += getNum($tds.eq(9));
-                        totalSum.target += getNum($tds.eq(10));
                         totalSum.m1 += getNum($tds.eq(11));
                         totalSum.m2 += getNum($tds.eq(12));
                         totalSum.m3 += getNum($tds.eq(13));
@@ -381,6 +403,9 @@ $conn = null;
                     // Restore original pagination
                     table.page.len(currentLength).draw(false);
                     table.page(currentPage).draw(false);
+
+                    // Use uniqueTarget for total, or 0 if not found
+                    totalSum.target = (uniqueTarget !== null) ? uniqueTarget : 0;
 
                     // Populate tbody with per-brand rows
                     var $tbody = $('#brandSummaryTable tbody');
@@ -423,33 +448,35 @@ $conn = null;
                         '</tr>';
                     $tbody.append(totalRowHtml);
 
-                    // Destroy existing DataTable if any
+                    // Destroy existing DataTable
                     if ($.fn.DataTable.isDataTable('#brandSummaryTable')) {
-                        $('#brandSummaryTable').DataTable().destroy();
-                        $('#brandSummaryTable').removeAttr('style');
+                        $('#brandSummaryTable').DataTable().destroy(true);
                     }
+                    $('#brandSummaryTable_wrapper').remove();
 
-                    // Unbind previous event and bind new one
-                    $('#brandSummaryModal').off('shown.bs.modal');
-                    $('#brandSummaryModal').on('shown.bs.modal', function() {
-                        // Small delay to ensure modal is fully rendered
+                    // Bind shown event BEFORE showing modal
+                    $('#brandSummaryModal').off('shown.bs.modal').on('shown.bs.modal', function() {
+                        if ($.fn.DataTable.isDataTable('#brandSummaryTable')) {
+                            return;
+                        }
+
+                        // Delay to ensure modal is fully rendered
                         setTimeout(function() {
                             var brandTable = $('#brandSummaryTable').DataTable({
-                                "scrollX": true,
-                                "scrollY": "55vh",
-                                "scrollCollapse": true,
                                 "paging": false,
                                 "info": false,
                                 "searching": false,
+                                "autoWidth": false,
                                 "language": {
                                     "emptyTable": "ไม่พบข้อมูล"
                                 }
                             });
-                            brandTable.columns.adjust().draw();
+
+                            brandTable.columns.adjust();
                         }, 100);
                     });
 
-                    // Show modal
+                    // Show modal - triggers shown.bs.modal
                     $('#brandSummaryModal').modal('show');
 
                 $('#brandSummaryTable').off('input', '.brand-target-all').on('input', '.brand-target-all', function() {
