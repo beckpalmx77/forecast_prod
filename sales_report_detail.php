@@ -200,41 +200,45 @@ $conn = null;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-striped" id="brandSummaryTable">
-                        <thead>
-                            <tr>
-                                <th>ยี่ห้อ</th>
-                                <th>ค่าเฉลี่ยต่อเดือน<br>(12 เดือนปีที่แล้ว)</th>
-                                <th>ค่า MIN<br>(12 เดือนปีที่แล้ว)</th>
-                                <th>ค่า MAX<br>(12 เดือนปีที่แล้ว)</th>
-                                <th>เป้ารายเดือน</th>
-                                <th>ยอดขายเดือน <?php echo $thai_months[$month1['month']].' '.$month1['year']; ?></th>
-                                <th>ยอดขายเดือน <?php echo $thai_months[$month2['month']].' '.$month2['year']; ?></th>
-                                <th>ยอดขายเดือน <?php echo $thai_months[$month3['month']].' '.$month3['year']; ?></th>
-                                <th>ค่าเฉลี่ย 3 เดือน</th>
-                                <th>คาดการณ์ยอดขาย <?php echo $thai_months[$selected_month] ?? ''; ?></th>
-                                <th>เปรียบเทียบฯ<br>(คาดการณ์ - ค่าเฉลี่ย 3 เดือน)</th>
-                                <th>เปรียบเทียบยอดขาย%<br>จากค่าเฉลี่ย</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                            <tr class="fw-bold">
-                                <td>รวมทั้งหมด</td>
-                                <td class="text-right" id="sumAvg"></td>
-                                <td class="text-right" id="sumMin"></td>
-                                <td class="text-right" id="sumMax"></td>
-                                <td class="text-right" id="sumTarget"></td>
-                                <td class="text-right" id="sumM1"></td>
-                                <td class="text-right" id="sumM2"></td>
-                                <td class="text-right" id="sumM3"></td>
-                                <td class="text-right" id="sumAvg3"></td>
-                                <td class="text-right" id="sumForecast"></td>
-                                <td class="text-right" id="sumCompare1"></td>
-                                <td class="text-right" id="sumPercent"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped" id="brandSummaryTable">
+                                <thead>
+                                    <tr>
+                                        <th>ยี่ห้อ</th>
+                                        <th>ค่าเฉลี่ยต่อเดือน<br>(12 เดือนปีที่แล้ว)</th>
+                                        <th>ค่า MIN<br>(12 เดือนปีที่แล้ว)</th>
+                                        <th>ค่า MAX<br>(12 เดือนปีที่แล้ว)</th>
+                                        <th>เป้ารายเดือน</th>
+                                        <th>ยอดขายเดือน <?php echo $thai_months[$month1['month']].' '.$month1['year']; ?></th>
+                                        <th>ยอดขายเดือน <?php echo $thai_months[$month2['month']].' '.$month2['year']; ?></th>
+                                        <th>ยอดขายเดือน <?php echo $thai_months[$month3['month']].' '.$month3['year']; ?></th>
+                                        <th>ค่าเฉลี่ย 3 เดือน</th>
+                                        <th>คาดการณ์ยอดขาย <?php echo $thai_months[$selected_month] ?? ''; ?></th>
+                                        <th>เปรียบเทียบฯ<br>(คาดการณ์ - ค่าเฉลี่ย 3 เดือน)</th>
+                                        <th>เปรียบเทียบยอดขาย%<br>จากค่าเฉลี่ย</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr class="fw-bold">
+                                        <td>รวมทั้งหมด</td>
+                                        <td class="text-right" id="sumAvg"></td>
+                                        <td class="text-right" id="sumMin"></td>
+                                        <td class="text-right" id="sumMax"></td>
+                                        <td class="text-right" id="sumTarget"></td>
+                                        <td class="text-right" id="sumM1"></td>
+                                        <td class="text-right" id="sumM2"></td>
+                                        <td class="text-right" id="sumM3"></td>
+                                        <td class="text-right" id="sumAvg3"></td>
+                                        <td class="text-right" id="sumForecast"></td>
+                                        <td class="text-right" id="sumCompare1"></td>
+                                        <td class="text-right" id="sumPercent"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

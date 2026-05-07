@@ -20,16 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed031ed3-1077-4dd5-a491-105e2cff1598" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/check_data.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/check_data_simple.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/check_last_year.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/debug_last_year.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_year_data.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sales_data.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_data.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sales_report.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sales_report_detail.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_report_detail.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save_report.php" beforeDir="false" afterPath="$PROJECT_DIR$/save_report.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
