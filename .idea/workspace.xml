@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ed031ed3-1077-4dd5-a491-105e2cff1598" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/check_data.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/check_data_simple.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/check_last_year.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/debug_last_year.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_year_data.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sales_data.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_data.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sales_report.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_report.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sales_report_detail.php" beforeDir="false" afterPath="$PROJECT_DIR$/sales_report_detail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save_report.php" beforeDir="false" afterPath="$PROJECT_DIR$/save_report.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpServers">
+    <servers>
+      <server host="localhost" id="a14d0371-beda-4a9c-ad9d-fc54d5d13564" name="localhost" port="8888" use_path_mappings="true" />
+    </servers>
+  </component>
+  <component name="ProjectId" id="3D9xrypS5aLZqdBBNHR08pSnd6D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\website\forecast_prod" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ed031ed3-1077-4dd5-a491-105e2cff1598" name="Default Changelist" comment="" />
+      <created>1777708289228</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1777708289228</updated>
+      <workItem from="1777708290479" duration="10523000" />
+      <workItem from="1777876350102" duration="22024000" />
+      <workItem from="1777964133396" duration="1577000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="540" y="171" key="#Servers" timestamp="1777964514256">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="540" y="171" key="#Servers/0.0.1920.1032@0.0.1920.1032" timestamp="1777964514256" />
+    <state x="414" y="171" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1777964526536">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="414" y="171" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1777964526536" />
+    <state x="616" y="238" key="run.anything.popup" timestamp="1778118312924">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="616" y="238" key="run.anything.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1778118312924" />
+  </component>
+</project>
