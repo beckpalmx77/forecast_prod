@@ -220,25 +220,14 @@ $conn = null;
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                                <tfoot>
-                                    <tr class="fw-bold">
-                                        <td>รวมทั้งหมด</td>
-                                        <td class="text-right" id="sumAvg"></td>
-                                        <td class="text-right" id="sumMin"></td>
-                                        <td class="text-right" id="sumMax"></td>
-                                        <td class="text-right" id="sumTarget"></td>
-                                        <td class="text-right" id="sumM1"></td>
-                                        <td class="text-right" id="sumM2"></td>
-                                        <td class="text-right" id="sumM3"></td>
-                                        <td class="text-right" id="sumAvg3"></td>
-                                        <td class="text-right" id="sumForecast"></td>
-                                        <td class="text-right" id="sumCompare1"></td>
-                                        <td class="text-right" id="sumPercent"></td>
-                                    </tr>
-                                </tfoot>
+
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-success" id="saveBrandSummaryBtn">บันทึก</button>
                 </div>
             </div>
         </div>
@@ -331,15 +320,31 @@ $conn = null;
                 return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
 
-            $('#showBrandSummaryBtn').on('click', function() {
+                $('#showBrandSummaryBtn').on('click', function() {
                 try {
                     var brands = ['AT', 'LEAO', 'LLIT'];
-                    var sum = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
+                    // Per-brand sums
+                    var brandSums = {};
+                    brands.forEach(function(brand) {
+                        brandSums[brand] = {
+                            avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0
+                        };
+                    });
+                    // Total sum
+                    var totalSum = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
 
                     // Temporarily show all rows to access DOM inputs
                     var currentPage = table.page();
                     var currentLength = table.page.len();
                     table.page.len(-1).draw(false);
+
+                    // Function to get numeric value from TD
+                    function getNum($td) {
+                        if ($td.find('input').length > 0) {
+                            return parseFloat($td.find('input').val().replace(/,/g,'')) || 0;
+                        }
+                        return parseFloat($td.text().replace(/,/g,'')) || 0;
+                    }
 
                     // Now all rows are in DOM, read values
                     table.$('tr').each(function() {
@@ -348,46 +353,104 @@ $conn = null;
                         var brand = $.trim($tds.eq(4).text());
                         if (brands.indexOf(brand) === -1) return;
 
-                        function getNum($td) {
-                            if ($td.find('input').length > 0) {
-                                return parseFloat($td.find('input').val().replace(/,/g,'')) || 0;
-                            }
-                            return parseFloat($td.text().replace(/,/g,'')) || 0;
-                        }
+                        // Add to per-brand sum
+                        brandSums[brand].avg += getNum($tds.eq(7));
+                        brandSums[brand].min += getNum($tds.eq(8));
+                        brandSums[brand].max += getNum($tds.eq(9));
+                        brandSums[brand].target += getNum($tds.eq(10));
+                        brandSums[brand].m1 += getNum($tds.eq(11));
+                        brandSums[brand].m2 += getNum($tds.eq(12));
+                        brandSums[brand].m3 += getNum($tds.eq(13));
+                        brandSums[brand].avg3 += getNum($tds.eq(14));
+                        brandSums[brand].forecast += getNum($tds.eq(15));
+                        brandSums[brand].compare1 += getNum($tds.eq(16));
 
-                        sum.avg += getNum($tds.eq(7));
-                        sum.min += getNum($tds.eq(8));
-                        sum.max += getNum($tds.eq(9));
-                        sum.target += getNum($tds.eq(10));
-                        sum.m1 += getNum($tds.eq(11));
-                        sum.m2 += getNum($tds.eq(12));
-                        sum.m3 += getNum($tds.eq(13));
-                        sum.avg3 += getNum($tds.eq(14));
-                        sum.forecast += getNum($tds.eq(15));
-                        sum.compare1 += getNum($tds.eq(16));
+                        // Add to total sum
+                        totalSum.avg += getNum($tds.eq(7));
+                        totalSum.min += getNum($tds.eq(8));
+                        totalSum.max += getNum($tds.eq(9));
+                        totalSum.target += getNum($tds.eq(10));
+                        totalSum.m1 += getNum($tds.eq(11));
+                        totalSum.m2 += getNum($tds.eq(12));
+                        totalSum.m3 += getNum($tds.eq(13));
+                        totalSum.avg3 += getNum($tds.eq(14));
+                        totalSum.forecast += getNum($tds.eq(15));
+                        totalSum.compare1 += getNum($tds.eq(16));
                     });
 
                     // Restore original pagination
                     table.page.len(currentLength).draw(false);
                     table.page(currentPage).draw(false);
 
-                    console.log('Brand Sums (all pages):', sum);
+                    // Populate tbody with per-brand rows
+                    var $tbody = $('#brandSummaryTable tbody');
+                    $tbody.empty();
+                    brands.forEach(function(brand) {
+                        var b = brandSums[brand];
+                        var comparePercent = b.avg3 !== 0 ? ((b.forecast / b.avg3) * 100) : 0;
+                        var rowHtml = '<tr>' +
+                            '<td>' + brand + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.avg) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.min) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.max) + '</td>' +
+                            '<td class="text-right">-</td>' +
+                            '<td class="text-right">' + numberFormat(b.m1) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.m2) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.m3) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.avg3) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.forecast) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.compare1) + '</td>' +
+                            '<td class="text-right">' + comparePercent.toFixed(2) + '%</td>' +
+                            '</tr>';
+                        $tbody.append(rowHtml);
+                    });
 
-                    var comparePercent = sum.avg3 !== 0 ? ((sum.forecast / sum.avg3) * 100) : 0;
+                    // Add total row as last row in tbody
+                    var totalComparePercent = totalSum.avg3 !== 0 ? ((totalSum.forecast / totalSum.avg3) * 100) : 0;
+                    var totalRowHtml = '<tr class="fw-bold table-primary">' +
+                        '<td>รวมทั้งหมด</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.avg) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.min) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.max) + '</td>' +
+                        '<td class="text-right"><input type="text" class="form-control form-control-sm brand-target-all" value="' + numberFormat(totalSum.target) + '" style="width:120px;text-align:right;"></td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m1) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m2) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m3) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.avg3) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.forecast) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.compare1) + '</td>' +
+                        '<td class="text-right">' + totalComparePercent.toFixed(2) + '%</td>' +
+                        '</tr>';
+                    $tbody.append(totalRowHtml);
 
-                    $('#sumAvg').text(numberFormat(sum.avg));
-                    $('#sumMin').text(numberFormat(sum.min));
-                    $('#sumMax').text(numberFormat(sum.max));
-                    $('#sumTarget').html('<input type="text" class="form-control form-control-sm brand-target-all" value="' + numberFormat(sum.target) + '" style="width:120px;text-align:right;">');
-                    $('#sumM1').text(numberFormat(sum.m1));
-                    $('#sumM2').text(numberFormat(sum.m2));
-                    $('#sumM3').text(numberFormat(sum.m3));
-                    $('#sumAvg3').text(numberFormat(sum.avg3));
-                    $('#sumForecast').text(numberFormat(sum.forecast));
-                    $('#sumCompare1').text(numberFormat(sum.compare1));
-                    $('#sumPercent').text(comparePercent.toFixed(2) + '%');
+                    // Destroy existing DataTable if any
+                    if ($.fn.DataTable.isDataTable('#brandSummaryTable')) {
+                        $('#brandSummaryTable').DataTable().destroy();
+                        $('#brandSummaryTable').removeAttr('style');
+                    }
 
-                $('#brandSummaryModal').modal('show');
+                    // Unbind previous event and bind new one
+                    $('#brandSummaryModal').off('shown.bs.modal');
+                    $('#brandSummaryModal').on('shown.bs.modal', function() {
+                        // Small delay to ensure modal is fully rendered
+                        setTimeout(function() {
+                            var brandTable = $('#brandSummaryTable').DataTable({
+                                "scrollX": true,
+                                "scrollY": "55vh",
+                                "scrollCollapse": true,
+                                "paging": false,
+                                "info": false,
+                                "searching": false,
+                                "language": {
+                                    "emptyTable": "ไม่พบข้อมูล"
+                                }
+                            });
+                            brandTable.columns.adjust().draw();
+                        }, 100);
+                    });
+
+                    // Show modal
+                    $('#brandSummaryModal').modal('show');
 
                 $('#brandSummaryTable').off('input', '.brand-target-all').on('input', '.brand-target-all', function() {
                     var val = $(this).val();
@@ -395,6 +458,80 @@ $conn = null;
                         var rowData = this.data();
                         if (brands.indexOf($.trim(rowData[4] || '')) !== -1) {
                             $(rowData[10]).find('input').val(val).trigger('input');
+                        }
+                    });
+                });
+
+                // Save button in modal - save AT, LEAO, LLIT targets
+                $('#saveBrandSummaryBtn').off('click').on('click', function() {
+                    var updates = [];
+                    var brands = ['AT', 'LEAO', 'LLIT'];
+
+                    // Get the combined target from the total row
+                    var combinedTarget = parseFloat($('#brandSummaryTable tbody tr.table-primary td').eq(4).find('input').val().replace(/,/g,'')) || 0;
+
+                    // Temporarily show all rows
+                    var currentPage = table.page();
+                    var currentLength = table.page.len();
+                    table.page.len(-1).draw(false);
+
+                    table.$('tr').each(function() {
+                        var $tds = $(this).find('td');
+                        if ($tds.length === 0) return;
+
+                        var brand = $.trim($tds.eq(4).text());
+                        if (brands.indexOf(brand) === -1) return;
+
+                        var $target = $tds.eq(10).find('input');
+                        var $forecast = $tds.eq(15).find('input');
+                        var $compare1 = $tds.eq(16).find('input');
+                        var $compare2 = $tds.eq(17).find('input');
+                        var $remark = $tds.eq(18).find('input');
+
+                        var id = $target.data('id');
+                        if (!id) return;
+
+                        // Use combined target for all brands
+                        $target.val(combinedTarget).trigger('input');
+
+                        updates.push({
+                            id: id,
+                            target_qty: combinedTarget,
+                            forecast_qty: parseFloat($forecast.val()) || 0,
+                            compare_sales_1: parseFloat($compare1.val()) || 0,
+                            compare_sales_2: parseFloat($compare2.val()) || 0,
+                            remark: $remark.val() || ''
+                        });
+                    });
+
+                    // Restore pagination
+                    table.page.len(currentLength).draw(false);
+                    table.page(currentPage).draw(false);
+
+                    if (updates.length === 0) {
+                        alert('ไม่มีข้อมูลที่จะบันทึก');
+                        return;
+                    }
+
+                    if (!confirm('ต้องการบันทึกข้อมูล 3 ยี่ห้อ (AT, LEAO, LLIT) ทั้งหมด ' + updates.length + ' รายการใช่หรือไม่?')) {
+                        return;
+                    }
+
+                    $.ajax({
+                        url: 'update_forecast.php',
+                        type: 'POST',
+                        data: { updates: JSON.stringify(updates) },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+                                $('#brandSummaryModal').modal('hide');
+                            } else {
+                                alert('เกิดข้อผิดพลาด: ' + response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
                         }
                     });
                 });
