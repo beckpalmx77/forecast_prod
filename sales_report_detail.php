@@ -125,6 +125,34 @@ $conn = null;
                 <label class="form-check-label" for="brandLLIT">LLIT</label>
             </div>
             <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBS" value="BS">
+                <label class="form-check-label" for="brandBS">BS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandML" value="ML">
+                <label class="form-check-label" for="brandML">ML</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDS" value="DS">
+                <label class="form-check-label" for="brandDS">DS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDL" value="DL">
+                <label class="form-check-label" for="brandDL">DL</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDT" value="DT">
+                <label class="form-check-label" for="brandDT">DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandVB" value="VB">
+                <label class="form-check-label" for="brandVB">VB</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandWESTLAKE" value="WESTLAKE">
+                <label class="form-check-label" for="brandWESTLAKE">WESTLAKE</label>
+            </div>
+            <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandOther" value="other">
                 <label class="form-check-label" for="brandOther">ยี่ห้ออื่นๆ</label>
             </div>
@@ -253,32 +281,29 @@ $conn = null;
 
     <script>
         $(document).ready(function() {
-            // Auto-calculate เทียบเทียบคาดการณ์จำนวนเส้น กับ ค่าเฉลี่ย 3 เดือน when forecast_qty changes
-            // avg_3month is already rounded in PHP (round up if decimal >= 0.5, round down if < 0.5)
+            // Auto-calculate เปรียบเทียบคาดการณ์จำนวนเส้น กับ ค่าเฉลี่ย 3 เดือน when forecast_qty changes
             $('#salesTable tbody').on('input', '.forecast-qty', function() {
                 var $row = $(this).closest('tr');
                 var forecastVal = parseFloat($(this).val()) || 0;
-                var avg3MonthText = $row.find('td').eq(14).text().replace(/,/g, ''); // column 14 in HTML = avg_3month (rounded)
+                var avg3MonthText = $row.find('td').eq(14).text().replace(/,/g, '');
                 var avg3Month = parseFloat(avg3MonthText) || 0;
                 var compare1 = forecastVal - avg3Month;
                 $row.find('.compare-sales-1').val(compare1.toFixed(2));
-                
-                // Calculate เปรียบเทียบยอดขาย%จากค่าเฉลี่ย = (forecast_qty - avg_3month) / avg_3month * 100
+
                 var compare2 = (avg3Month !== 0) ? ((forecastVal - avg3Month) / avg3Month) * 100 : 0;
                 $row.find('.compare-sales-2').val(compare2.toFixed(2));
             });
-            
+
+            // Main DataTable
             var table = $('#salesTable').DataTable({
                 "lengthMenu": [[12, 30, 50, 100], [12, 30, 50, 100]],
                 "pageLength": 12,
                 dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        title: '<?php echo $thai_months[$selected_month]."-".$selected_year; ?>',
-                        text: 'Export Excel'
-                    }
-                ],
+                buttons: [{
+                    extend: 'excelHtml5',
+                    title: '<?php echo $thai_months[$selected_month]."-".$selected_year; ?>',
+                    text: 'Export Excel'
+                }],
                 "language": {
                     "lengthMenu": "แสดง _MENU_ รายการ",
                     "zeroRecords": "ไม่พบข้อมูล",
@@ -286,7 +311,7 @@ $conn = null;
                     "infoEmpty": "ไม่มีข้อมูล",
                     "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)",
                     "search": "ค้นหา:",
-                    "paginate": {
+                    "pagination": {
                         "first": "หน้าแรก",
                         "last": "หน้าสุดท้าย",
                         "next": "ถัดไป",
@@ -333,14 +358,17 @@ $conn = null;
                 table.draw();
             });
 
-            // Brand Summary Modal
+            // Format number
             function numberFormat(num) {
                 return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
 
-                $('#showBrandSummaryBtn').on('click', function() {
+            // Brands array
+            var brands = ['AT', 'LEAO', 'LLIT'];
+
+            // Show Brand Summary Modal
+            $('#showBrandSummaryBtn').on('click', function() {
                 try {
-                    var brands = ['AT', 'LEAO', 'LLIT'];
                     // Per-brand sums
                     var brandSums = {};
                     brands.forEach(function(brand) {
@@ -348,15 +376,15 @@ $conn = null;
                             avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0
                         };
                     });
-                    // Total sum
+
                     var totalSum = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
 
-                    // Temporarily show all rows to access DOM inputs
+                    // Temporarily show all rows
                     var currentPage = table.page();
                     var currentLength = table.page.len();
                     table.page.len(-1).draw(false);
 
-                    // Function to get numeric value from TD
+                    // Function to get numeric value
                     function getNum($td) {
                         if ($td.find('input').length > 0) {
                             return parseFloat($td.find('input').val().replace(/,/g,'')) || 0;
@@ -364,20 +392,20 @@ $conn = null;
                         return parseFloat($td.text().replace(/,/g,'')) || 0;
                     }
 
-                    // Now all rows are in DOM, read values
+                    // Read values
                     var uniqueTarget = null;
                     table.$('tr').each(function() {
                         var $tds = $(this).find('td');
                         if ($tds.length === 0) return;
+
                         var brand = $.trim($tds.eq(4).text());
                         if (brands.indexOf(brand) === -1) return;
 
-                        // Get target value - assume all AT, LEAO, LLIT have same target
                         if (uniqueTarget === null) {
                             uniqueTarget = getNum($tds.eq(10));
                         }
 
-                        // Add to per-brand sum (excluding target)
+                        // Per-brand sums (excluding target for display)
                         brandSums[brand].avg += getNum($tds.eq(7));
                         brandSums[brand].min += getNum($tds.eq(8));
                         brandSums[brand].max += getNum($tds.eq(9));
@@ -388,7 +416,7 @@ $conn = null;
                         brandSums[brand].forecast += getNum($tds.eq(15));
                         brandSums[brand].compare1 += getNum($tds.eq(16));
 
-                        // Add to total sum (excluding target - use uniqueTarget instead)
+                        // Total sum
                         totalSum.avg += getNum($tds.eq(7));
                         totalSum.min += getNum($tds.eq(8));
                         totalSum.max += getNum($tds.eq(9));
@@ -400,16 +428,16 @@ $conn = null;
                         totalSum.compare1 += getNum($tds.eq(16));
                     });
 
-                    // Restore original pagination
+                    // Restore pagination
                     table.page.len(currentLength).draw(false);
                     table.page(currentPage).draw(false);
 
-                    // Use uniqueTarget for total, or 0 if not found
                     totalSum.target = (uniqueTarget !== null) ? uniqueTarget : 0;
 
-                    // Populate tbody with per-brand rows
+                    // Populate modal table
                     var $tbody = $('#brandSummaryTable tbody');
                     $tbody.empty();
+
                     brands.forEach(function(brand) {
                         var b = brandSums[brand];
                         var comparePercent = b.avg3 !== 0 ? ((b.forecast / b.avg3) * 100) : 0;
@@ -430,7 +458,7 @@ $conn = null;
                         $tbody.append(rowHtml);
                     });
 
-                    // Add total row as last row in tbody
+                    // Total row
                     var totalComparePercent = totalSum.avg3 !== 0 ? ((totalSum.forecast / totalSum.avg3) * 100) : 0;
                     var totalRowHtml = '<tr class="fw-bold table-primary">' +
                         '<td>รวมทั้งหมด</td>' +
@@ -448,56 +476,31 @@ $conn = null;
                         '</tr>';
                     $tbody.append(totalRowHtml);
 
-                    // Destroy existing DataTable
-                    if ($.fn.DataTable.isDataTable('#brandSummaryTable')) {
-                        $('#brandSummaryTable').DataTable().destroy(true);
-                    }
-                    $('#brandSummaryTable_wrapper').remove();
-
-                    // Bind shown event BEFORE showing modal
-                    $('#brandSummaryModal').off('shown.bs.modal').on('shown.bs.modal', function() {
-                        if ($.fn.DataTable.isDataTable('#brandSummaryTable')) {
-                            return;
-                        }
-
-                        // Delay to ensure modal is fully rendered
-                        setTimeout(function() {
-                            var brandTable = $('#brandSummaryTable').DataTable({
-                                "paging": false,
-                                "info": false,
-                                "searching": false,
-                                "autoWidth": false,
-                                "language": {
-                                    "emptyTable": "ไม่พบข้อมูล"
-                                }
-                            });
-
-                            brandTable.columns.adjust();
-                        }, 100);
-                    });
-
-                    // Show modal - triggers shown.bs.modal
+                    // Show modal
                     $('#brandSummaryModal').modal('show');
 
-                $('#brandSummaryTable').off('input', '.brand-target-all').on('input', '.brand-target-all', function() {
-                    var val = $(this).val();
-                    table.rows({ search: 'applied' }).every(function() {
-                        var rowData = this.data();
-                        if (brands.indexOf($.trim(rowData[4] || '')) !== -1) {
-                            $(rowData[10]).find('input').val(val).trigger('input');
-                        }
-                    });
+                } catch(e) {
+                    alert('Error: ' + e.message);
+                }
+            });
+
+            // Brand target-all input event (delegated)
+            $(document).on('input', '.brand-target-all', function() {
+                var val = $(this).val();
+                table.rows({ search: 'applied' }).every(function() {
+                    var rowData = this.data();
+                    if (brands.indexOf($.trim(rowData[4] || '')) !== -1) {
+                        $(rowData[10]).find('input').val(val).trigger('input');
+                    }
                 });
+            });
 
-                // Save button in modal - save AT, LEAO, LLIT targets
-                $('#saveBrandSummaryBtn').off('click').on('click', function() {
+            // Save button in modal
+            $('#saveBrandSummaryBtn').on('click', function() {
+                try {
                     var updates = [];
-                    var brands = ['AT', 'LEAO', 'LLIT'];
-
-                    // Get the combined target from the total row
                     var combinedTarget = parseFloat($('#brandSummaryTable tbody tr.table-primary td').eq(4).find('input').val().replace(/,/g,'')) || 0;
 
-                    // Temporarily show all rows
                     var currentPage = table.page();
                     var currentLength = table.page.len();
                     table.page.len(-1).draw(false);
@@ -518,7 +521,6 @@ $conn = null;
                         var id = $target.data('id');
                         if (!id) return;
 
-                        // Use combined target for all brands
                         $target.val(combinedTarget).trigger('input');
 
                         updates.push({
@@ -531,7 +533,6 @@ $conn = null;
                         });
                     });
 
-                    // Restore pagination
                     table.page.len(currentLength).draw(false);
                     table.page(currentPage).draw(false);
 
@@ -561,24 +562,23 @@ $conn = null;
                             alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
                         }
                     });
-                });
                 } catch(e) {
                     alert('Error: ' + e.message);
                 }
             });
 
+            // Main save button
             $('#saveBtn').click(function() {
                 var updates = [];
-                // Temporarily show all rows to access all inputs
+
                 var currentPage = table.page();
                 var currentLength = table.page.len();
                 table.page.len(-1).draw(false);
 
-                // Now all rows are in DOM
                 table.$('tr').each(function(rowIndex) {
                     var $row = $(this);
                     var $target = $row.find('.target-qty');
-                    if ($target.length === 0) return; // skip header row
+                    if ($target.length === 0) return;
 
                     var $forecast = $row.find('.forecast-qty');
                     var $compare1 = $row.find('.compare-sales-1');
@@ -598,19 +598,18 @@ $conn = null;
                     });
                 });
 
-                // Restore original pagination
                 table.page.len(currentLength).draw(false);
                 table.page(currentPage).draw(false);
-                
+
                 if (updates.length === 0) {
                     alert('ไม่มีข้อมูลที่จะบันทึก');
                     return;
                 }
-                
+
                 if (!confirm('ต้องการบันทึกข้อมูลทั้งหมด ' + updates.length + ' รายการใช่หรือไม่?')) {
                     return;
                 }
-                
+
                 $.ajax({
                     url: 'update_forecast.php',
                     type: 'POST',
