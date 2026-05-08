@@ -67,7 +67,7 @@ $conn = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายละเอียดรายงานยอดขาย</title>
+    <title>รายละเอียดวางแผนขายยาง</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet">
@@ -98,7 +98,7 @@ $conn = null;
 <body>
     <div class="container-fluid mt-5">
         <?php $display_name = $ar_name ?? ''; ?>
-        <h2 class="my-4">รายละเอียดรายงานยอดขาย - <?php echo htmlspecialchars($display_name); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)</h2>
+        <h2 class="my-4">รายละเอียดวางแผนขายยาง - <?php echo htmlspecialchars($display_name); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)</h2>
         
         <div class="mb-3">
             <a href="report_list.php" class="btn btn-outline-secondary">กลับ</a>
@@ -228,7 +228,7 @@ $conn = null;
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-line me-2" viewBox="0 0 16 16">
                             <path d="M0 0h1v16H0V0zm1 2h2v12H1V2zm3 3h2v9H4V5zm3 2h2v7H7V7zm3-4h2v11h-2V3zm3 6h2v5h-2V9z"/>
                         </svg>
-                        รายละเอียดรายงานยอดขาย - <?php echo htmlspecialchars($ar_name ?? ''); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)
+                        รายละเอียดวางแผนขายยาง - <?php echo htmlspecialchars($ar_name ?? ''); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
