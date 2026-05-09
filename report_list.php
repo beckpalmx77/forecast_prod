@@ -39,6 +39,7 @@ $thai_months = [
         <table id="headerTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>ลำดับที่</th>
                     <th>รหัสร้านค้า</th>
                     <th>ชื่อร้านค้า</th>
                     <th>เดือน/ปี</th>
@@ -48,8 +49,10 @@ $thai_months = [
                 </tr>
             </thead>
             <tbody>
+                <?php $i = 1; ?>
                 <?php foreach ($headers as $h): ?>
                 <tr>
+                    <td class="text-center"><?= $i++ ?></td>
                     <td><?= htmlspecialchars($h['ar_code'] ?? '-') ?></td>
                     <td class="text-start"><?= htmlspecialchars($h['ar_name'] ?? '-') ?></td>
                     <td><?= $thai_months[$h['report_month']] . ' ' . $h['report_year'] ?></td>
