@@ -33,10 +33,13 @@ $thai_months = [
 </head>
 <body>
     <div class="container">
-        <h2 class="my-4">รายการบันทึกวางแผนเป้ายอดขาย</h2>
-        <a href="sales_report" class="btn btn-primary mb-3">สร้างรายงานใหม่</a>
-        
-        <table id="headerTable" class="table table-bordered table-striped">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">รายการบันทึกวางแผนเป้ายอดขาย</h4>
+            </div>
+            <div class="card-body">
+                <a href="sales_report" class="btn btn-primary mb-3">สร้างรายงานใหม่</a>
+                <table id="headerTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ลำดับที่</th>
@@ -66,6 +69,8 @@ $thai_months = [
                 <?php endforeach; ?>
             </tbody>
         </table>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

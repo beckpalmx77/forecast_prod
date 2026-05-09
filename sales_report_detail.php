@@ -97,16 +97,18 @@ $conn = null;
 </head>
 <body>
     <div class="container-fluid mt-5">
-        <?php $display_name = $ar_name ?? ''; ?>
-        <h2 class="my-4">รายละเอียดวางแผนขายยาง - <?php echo htmlspecialchars($display_name); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)</h2>
-        
-        <div class="mb-3">
-            <a href="report_list.php" class="btn btn-outline-secondary">กลับ</a>
-            <button type="button" id="saveBtn" class="btn btn-success">บันทึกการแก้ไข</button>
-            <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อ AT LEAO LLIT</button>
-        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">รายละเอียดวางแผนขายยาง - <?php echo htmlspecialchars($ar_name ?? ''); ?> (<?php echo $thai_months[$selected_month] ?? ''; ?> <?php echo $selected_year; ?>)</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <a href="report_list.php" class="btn btn-outline-secondary">กลับ</a>
+                    <button type="button" id="saveBtn" class="btn btn-success">บันทึกการแก้ไข</button>
+                    <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อ AT LEAO LLIT</button>
+                </div>
 
-        <div class="mb-3">
+                <div class="mb-3">
             <label class="form-label fw-bold">กรองข้อมูลตามยี่ห้อ:</label>
             <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandAll" value="all" checked>
@@ -233,6 +235,8 @@ $conn = null;
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
+            </div>
         </div>
     </div>
 
