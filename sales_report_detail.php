@@ -149,6 +149,10 @@ $conn = null;
                 <label class="form-check-label" for="brandDL">DL</label>
             </div>
             <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandPR" value="PR">
+                <label class="form-check-label" for="brandPR">PR</label>
+            </div>
+            <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandVB" value="VB">
                 <label class="form-check-label" for="brandVB">VB</label>
             </div>
@@ -381,7 +385,7 @@ $conn = null;
                             if (brand === sv) { isDirect = true; break; }
                         }
                     }
-                    var knownBrands = ['AT','LEAO','LLIT','BS','FS','DT','ML','DS','DL','VB','WESTLAKE','BS/FS','BS/FS/DT','DT/FS/DT','FS/DT'];
+                    var knownBrands = ['AT','LEAO','LLIT','BS','FS','DT','ML','DS','DL','PR','VB','WESTLAKE','BS/FS','BS/FS/DT','DT/FS/DT','FS/DT'];
                     var isOther = selected.indexOf('other') !== -1 && !isDirect && knownBrands.indexOf(brand) === -1;
 
                     return isDirect || isOther;
