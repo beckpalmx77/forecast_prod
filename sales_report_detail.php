@@ -129,6 +129,14 @@ $conn = null;
                 <label class="form-check-label" for="brandBS">BS</label>
             </div>
             <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandFS" value="FS">
+                <label class="form-check-label" for="brandFS">FS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDT" value="DT">
+                <label class="form-check-label" for="brandDT">DT</label>
+            </div>
+            <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandML" value="ML">
                 <label class="form-check-label" for="brandML">ML</label>
             </div>
@@ -141,16 +149,28 @@ $conn = null;
                 <label class="form-check-label" for="brandDL">DL</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandDT" value="DT">
-                <label class="form-check-label" for="brandDT">DT</label>
-            </div>
-            <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandVB" value="VB">
                 <label class="form-check-label" for="brandVB">VB</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandWESTLAKE" value="WESTLAKE">
                 <label class="form-check-label" for="brandWESTLAKE">WESTLAKE</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFS" value="BS/FS">
+                <label class="form-check-label" for="brandBSFS">BS/FS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFSDT" value="BS/FS/DT">
+                <label class="form-check-label" for="brandBSFSDT">BS/FS/DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDTFSDT" value="DT/FS/DT">
+                <label class="form-check-label" for="brandDTFSDT">DT/FS/DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandFSDT" value="FS/DT">
+                <label class="form-check-label" for="brandFSDT">FS/DT</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input brand-filter" type="checkbox" id="brandOther" value="other">
@@ -350,8 +370,19 @@ $conn = null;
 
                     if (selected.indexOf('all') !== -1) return true;
 
-                    var isOther = selected.indexOf('other') !== -1 && brand !== 'AT' && brand !== 'LEAO' && brand !== 'LLIT';
-                    var isDirect = selected.indexOf(brand) !== -1;
+                    var isDirect = false;
+                    var brandParts = brand.split('/');
+                    for (var s = 0; s < selected.length; s++) {
+                        var sv = selected[s];
+                        if (sv === 'all' || sv === 'other') continue;
+                        if (sv.indexOf('/') === -1) {
+                            if (brandParts.indexOf(sv) !== -1) { isDirect = true; break; }
+                        } else {
+                            if (brand === sv) { isDirect = true; break; }
+                        }
+                    }
+                    var knownBrands = ['AT','LEAO','LLIT','BS','FS','DT','ML','DS','DL','VB','WESTLAKE','BS/FS','BS/FS/DT','DT/FS/DT','FS/DT'];
+                    var isOther = selected.indexOf('other') !== -1 && !isDirect && knownBrands.indexOf(brand) === -1;
 
                     return isDirect || isOther;
                 });
