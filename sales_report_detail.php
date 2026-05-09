@@ -79,12 +79,15 @@ $conn = null;
         .table-responsive {
             position: relative;
         }
-        th:nth-child(1), td:nth-child(1) {
-            position: sticky;
-            left: 0;
-            background-color: white;
-            z-index: 999;
-        }
+        th:nth-child(1), td:nth-child(1) { position:sticky; left:0; }
+        th:nth-child(2), td:nth-child(2) { position:sticky; left:90px; }
+        th:nth-child(3), td:nth-child(3) { position:sticky; left:190px; }
+        th:nth-child(4), td:nth-child(4) { position:sticky; left:310px; }
+        th:nth-child(5), td:nth-child(5) { position:sticky; left:430px; }
+        th:nth-child(6), td:nth-child(6) { position:sticky; left:510px; }
+        th:nth-child(7), td:nth-child(7) { position:sticky; left:610px; }
+        th:nth-child(1), th:nth-child(2), th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6), th:nth-child(7) { z-index:1002; background-color:#f5f5f5; }
+        td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) { z-index:1001; background-color:white; }
         .text-right {
             text-align: right;
         }
