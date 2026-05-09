@@ -112,7 +112,11 @@ $conn = null;
 </head>
 <body>
     <div class="container-fluid mt-5">
-        <h2 class="my-4">รายงานยอดขาย 3 เดือน (เริ่มจากเดือนที่เลือก)</h2>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">รายงานยอดขาย 3 เดือน (เริ่มจากเดือนที่เลือก)</h4>
+            </div>
+            <div class="card-body">
         <form id="searchForm" class="row g-3 mb-4">
             <div class="col-md-3">
                 <label class="form-label">เลือกเดือน:</label>
@@ -230,6 +234,9 @@ $conn = null;
         </table>
         </div>
         <?php endif; ?>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
