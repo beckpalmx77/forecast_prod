@@ -79,15 +79,12 @@ $conn = null;
         .table-responsive {
             position: relative;
         }
-        th:nth-child(1), td:nth-child(1) { position:sticky; left:0; }
-        th:nth-child(2), td:nth-child(2) { position:sticky; left:90px; }
-        th:nth-child(3), td:nth-child(3) { position:sticky; left:190px; }
-        th:nth-child(4), td:nth-child(4) { position:sticky; left:310px; }
-        th:nth-child(5), td:nth-child(5) { position:sticky; left:430px; }
-        th:nth-child(6), td:nth-child(6) { position:sticky; left:510px; }
-        th:nth-child(7), td:nth-child(7) { position:sticky; left:610px; }
-        th:nth-child(1), th:nth-child(2), th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6), th:nth-child(7) { z-index:1002; background-color:#f5f5f5; }
-        td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) { z-index:1001; background-color:white; }
+
+        th:nth-child(1), td:nth-child(1) { position:sticky; left:0; z-index:1002; background-color:white; }
+        th:nth-child(1) { z-index:1003; }
+        .table-striped>tbody>tr:nth-of-type(odd)>td:nth-child(1) { background-color:white; }
+        td:nth-child(1) { outline:1px solid #dee2e6; outline-offset:-1px; }
+
         .text-right {
             text-align: right;
         }
@@ -106,98 +103,23 @@ $conn = null;
             </div>
             <div class="card-body">
                 <div class="mb-3">
+                    <span class="fw-bold me-3">รหัสร้านค้า: <?php echo htmlspecialchars($selected_ar_code ?? ''); ?></span>
+                    <span class="fw-bold me-3">ร้านค้า: <?php echo htmlspecialchars($ar_name ?? ''); ?></span>
+                    <span class="fw-bold me-3">เซลส์: <?php echo htmlspecialchars($loaded_data[0]['sales_person'] ?? ''); ?></span>
+                    <span class="fw-bold">เทค: <?php echo htmlspecialchars($loaded_data[0]['take_person'] ?? ''); ?></span>
+                </div>
+                <div class="mb-3">
                     <a href="report_list.php" class="btn btn-outline-secondary">กลับ</a>
                     <button type="button" id="saveBtn" class="btn btn-success">บันทึกการแก้ไข</button>
                     <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อ AT LEAO LLIT</button>
                 </div>
 
-                <div class="mb-3">
-            <label class="form-label fw-bold">กรองข้อมูลตามยี่ห้อ:</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandAll" value="all" checked>
-                <label class="form-check-label" for="brandAll">ทั้งหมด</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandAT" value="AT">
-                <label class="form-check-label" for="brandAT">AT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandLEAO" value="LEAO">
-                <label class="form-check-label" for="brandLEAO">LEAO</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandLLIT" value="LLIT">
-                <label class="form-check-label" for="brandLLIT">LLIT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandBS" value="BS">
-                <label class="form-check-label" for="brandBS">BS</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandFS" value="FS">
-                <label class="form-check-label" for="brandFS">FS</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandDT" value="DT">
-                <label class="form-check-label" for="brandDT">DT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandML" value="ML">
-                <label class="form-check-label" for="brandML">ML</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandDS" value="DS">
-                <label class="form-check-label" for="brandDS">DS</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandDL" value="DL">
-                <label class="form-check-label" for="brandDL">DL</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandPR" value="PR">
-                <label class="form-check-label" for="brandPR">PR</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandVB" value="VB">
-                <label class="form-check-label" for="brandVB">VB</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandWESTLAKE" value="WESTLAKE">
-                <label class="form-check-label" for="brandWESTLAKE">WESTLAKE</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFS" value="BS/FS">
-                <label class="form-check-label" for="brandBSFS">BS/FS</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFSDT" value="BS/FS/DT">
-                <label class="form-check-label" for="brandBSFSDT">BS/FS/DT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandDTFSDT" value="DT/FS/DT">
-                <label class="form-check-label" for="brandDTFSDT">DT/FS/DT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandFSDT" value="FS/DT">
-                <label class="form-check-label" for="brandFSDT">FS/DT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input brand-filter" type="checkbox" id="brandOther" value="other">
-                <label class="form-check-label" for="brandOther">ยี่ห้ออื่นๆ</label>
-            </div>
-        </div>
-
-        <div class="table-responsive">
+                <div class="table-responsive">
         <table id="salesTable" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>รหัสร้านค้า</th>
-                    <th>ชื่อร้านค้า</th>
-                    <th>เซลส์</th>
-                    <th>เทค</th>
-                    <th>ยี่ห้อ</th>
                     <th>รหัสสินค้า</th>
-                    <th>ชื่อสินค้า</th>
+                    <th>ยี่ห้อ</th>
                     <th>ค่าเฉลี่ยต่อเดือน<br>(12 เดือนปีที่แล้ว)</th>
                     <th>ค่า MIN<br>(12 เดือนปีที่แล้ว)</th>
                     <th>ค่า MAX<br>(12 เดือนปีที่แล้ว)</th>
@@ -215,13 +137,8 @@ $conn = null;
             <tbody>
                 <?php foreach ($loaded_data as $row): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($selected_ar_code ?? ''); ?></td>
-                    <td class="text-start"><?php echo htmlspecialchars($row['ar_name'] ?? ''); ?></td>
-                    <td class="text-start"><?php echo htmlspecialchars($row['sales_person'] ?? ''); ?></td>
-                    <td class="text-start"><?php echo htmlspecialchars($row['take_person'] ?? ''); ?></td>
-                    <td class="text-start"><?php echo htmlspecialchars($row['brand_code'] ?? ''); ?></td>
                     <td><?php echo htmlspecialchars($row['sku_code'] ?? ''); ?></td>
-                    <td class="text-start"><?php echo htmlspecialchars($row['sku_name'] ?? ''); ?></td>
+                    <td class="text-start"><?php echo htmlspecialchars($row['brand_code'] ?? ''); ?></td>
                     <td class="text-right"><?php echo number_format($row['avg_monthly_last_year'] ?? 0, 2); ?></td>
                     <td class="text-right"><?php echo number_format($row['min_qty_last_year'] ?? 0, 2); ?></td>
                     <td class="text-right"><?php echo number_format($row['max_qty_last_year'] ?? 0, 2); ?></td>
@@ -376,7 +293,7 @@ $conn = null;
 
                 $.fn.dataTable.ext.search.pop();
                 $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var brand = data[4] || '';
+                    var brand = data[1] || '';
                     var selected = $('.brand-filter:checked').map(function() { return $(this).val(); }).get();
 
                     if (selected.indexOf('all') !== -1) return true;
