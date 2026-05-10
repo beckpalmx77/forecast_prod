@@ -114,7 +114,83 @@ $conn = null;
                     <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อ AT LEAO LLIT</button>
                 </div>
 
-                <div class="table-responsive">
+                <div class="mb-3">
+            <label class="form-label fw-bold">กรองข้อมูลตามยี่ห้อ:</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandAll" value="all" checked>
+                <label class="form-check-label" for="brandAll">ทั้งหมด</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandAT" value="AT">
+                <label class="form-check-label" for="brandAT">AT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandLEAO" value="LEAO">
+                <label class="form-check-label" for="brandLEAO">LEAO</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandLLIT" value="LLIT">
+                <label class="form-check-label" for="brandLLIT">LLIT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBS" value="BS">
+                <label class="form-check-label" for="brandBS">BS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandFS" value="FS">
+                <label class="form-check-label" for="brandFS">FS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDT" value="DT">
+                <label class="form-check-label" for="brandDT">DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandML" value="ML">
+                <label class="form-check-label" for="brandML">ML</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDS" value="DS">
+                <label class="form-check-label" for="brandDS">DS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDL" value="DL">
+                <label class="form-check-label" for="brandDL">DL</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandPR" value="PR">
+                <label class="form-check-label" for="brandPR">PR</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandVB" value="VB">
+                <label class="form-check-label" for="brandVB">VB</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandWESTLAKE" value="WESTLAKE">
+                <label class="form-check-label" for="brandWESTLAKE">WESTLAKE</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFS" value="BS/FS">
+                <label class="form-check-label" for="brandBSFS">BS/FS</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandBSFSDT" value="BS/FS/DT">
+                <label class="form-check-label" for="brandBSFSDT">BS/FS/DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandDTFSDT" value="DT/FS/DT">
+                <label class="form-check-label" for="brandDTFSDT">DT/FS/DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandFSDT" value="FS/DT">
+                <label class="form-check-label" for="brandFSDT">FS/DT</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input brand-filter" type="checkbox" id="brandOther" value="other">
+                <label class="form-check-label" for="brandOther">ยี่ห้ออื่นๆ</label>
+            </div>
+        </div>
+
+        <div class="table-responsive">
         <table id="salesTable" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
