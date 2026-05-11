@@ -398,20 +398,9 @@ $conn = null;
                 return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
 
-            // Brands array
-            var brands = ['AT', 'LEAO', 'LLIT'];
-
             // Show Brand Summary Modal
             $('#showBrandSummaryBtn').on('click', function() {
                 try {
-                    // Per-brand sums
-                    var brandSums = {};
-                    brands.forEach(function(brand) {
-                        brandSums[brand] = {
-                            avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0
-                        };
-                    });
-
                     var totalSum = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
 
                     // Temporarily show all rows
@@ -429,38 +418,41 @@ $conn = null;
 
                     // Read values
                     var uniqueTarget = null;
+                    var brandSums = {};
                     table.$('tr').each(function() {
                         var $tds = $(this).find('td');
                         if ($tds.length === 0) return;
 
-                        var brand = $.trim($tds.eq(4).text());
-                        if (brands.indexOf(brand) === -1) return;
+                        var brand = $.trim($tds.eq(1).text());
+                        if (!brand) return;
 
-                        if (uniqueTarget === null) {
-                            uniqueTarget = getNum($tds.eq(10));
+                        if (!brandSums[brand]) {
+                            brandSums[brand] = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
                         }
 
-                        // Per-brand sums (excluding target for display)
-                        brandSums[brand].avg += getNum($tds.eq(7));
-                        brandSums[brand].min += getNum($tds.eq(8));
-                        brandSums[brand].max += getNum($tds.eq(9));
-                        brandSums[brand].m1 += getNum($tds.eq(11));
-                        brandSums[brand].m2 += getNum($tds.eq(12));
-                        brandSums[brand].m3 += getNum($tds.eq(13));
-                        brandSums[brand].avg3 += getNum($tds.eq(14));
-                        brandSums[brand].forecast += getNum($tds.eq(15));
-                        brandSums[brand].compare1 += getNum($tds.eq(16));
+                        if (uniqueTarget === null) {
+                            uniqueTarget = getNum($tds.eq(5));
+                        }
 
-                        // Total sum
-                        totalSum.avg += getNum($tds.eq(7));
-                        totalSum.min += getNum($tds.eq(8));
-                        totalSum.max += getNum($tds.eq(9));
-                        totalSum.m1 += getNum($tds.eq(11));
-                        totalSum.m2 += getNum($tds.eq(12));
-                        totalSum.m3 += getNum($tds.eq(13));
-                        totalSum.avg3 += getNum($tds.eq(14));
-                        totalSum.forecast += getNum($tds.eq(15));
-                        totalSum.compare1 += getNum($tds.eq(16));
+                        brandSums[brand].avg += getNum($tds.eq(2));
+                        brandSums[brand].min += getNum($tds.eq(3));
+                        brandSums[brand].max += getNum($tds.eq(4));
+                        brandSums[brand].m1 += getNum($tds.eq(6));
+                        brandSums[brand].m2 += getNum($tds.eq(7));
+                        brandSums[brand].m3 += getNum($tds.eq(8));
+                        brandSums[brand].avg3 += getNum($tds.eq(9));
+                        brandSums[brand].forecast += getNum($tds.eq(10));
+                        brandSums[brand].compare1 += getNum($tds.eq(11));
+
+                        totalSum.avg += getNum($tds.eq(2));
+                        totalSum.min += getNum($tds.eq(3));
+                        totalSum.max += getNum($tds.eq(4));
+                        totalSum.m1 += getNum($tds.eq(6));
+                        totalSum.m2 += getNum($tds.eq(7));
+                        totalSum.m3 += getNum($tds.eq(8));
+                        totalSum.avg3 += getNum($tds.eq(9));
+                        totalSum.forecast += getNum($tds.eq(10));
+                        totalSum.compare1 += getNum($tds.eq(11));
                     });
 
                     // Restore pagination
@@ -473,7 +465,7 @@ $conn = null;
                     var $tbody = $('#brandSummaryTable tbody');
                     $tbody.empty();
 
-                    brands.forEach(function(brand) {
+                    Object.keys(brandSums).sort().forEach(function(brand) {
                         var b = brandSums[brand];
                         var comparePercent = b.avg3 !== 0 ? ((b.forecast / b.avg3) * 100) : 0;
                         var rowHtml = '<tr>' +
@@ -524,8 +516,8 @@ $conn = null;
                 var val = $(this).val();
                 table.rows({ search: 'applied' }).every(function() {
                     var rowData = this.data();
-                    if (brands.indexOf($.trim(rowData[4] || '')) !== -1) {
-                        $(rowData[10]).find('input').val(val).trigger('input');
+                    if ($.trim(rowData[1] || '') !== '') {
+                        $(rowData[5]).find('input').val(val).trigger('input');
                     }
                 });
             });
@@ -544,14 +536,14 @@ $conn = null;
                         var $tds = $(this).find('td');
                         if ($tds.length === 0) return;
 
-                        var brand = $.trim($tds.eq(4).text());
-                        if (brands.indexOf(brand) === -1) return;
+                        var brand = $.trim($tds.eq(1).text());
+                        if (!brand) return;
 
-                        var $target = $tds.eq(10).find('input');
-                        var $forecast = $tds.eq(15).find('input');
-                        var $compare1 = $tds.eq(16).find('input');
-                        var $compare2 = $tds.eq(17).find('input');
-                        var $remark = $tds.eq(18).find('input');
+                        var $target = $tds.eq(5).find('input');
+                        var $forecast = $tds.eq(10).find('input');
+                        var $compare1 = $tds.eq(11).find('input');
+                        var $compare2 = $tds.eq(12).find('input');
+                        var $remark = $tds.eq(13).find('input');
 
                         var id = $target.data('id');
                         if (!id) return;
@@ -576,7 +568,7 @@ $conn = null;
                         return;
                     }
 
-                    if (!confirm('ต้องการบันทึกข้อมูล 3 ยี่ห้อ (AT, LEAO, LLIT) ทั้งหมด ' + updates.length + ' รายการใช่หรือไม่?')) {
+                    if (!confirm('ต้องการบันทึกข้อมูลทั้งหมด ' + updates.length + ' รายการใช่หรือไม่?')) {
                         return;
                     }
 
@@ -598,7 +590,7 @@ $conn = null;
                         }
                     });
                 } catch(e) {
-                    alert('Error: ' + e.message);
+                    alert('ข้อผิดพลาด: ' + e.message);
                 }
             });
 
