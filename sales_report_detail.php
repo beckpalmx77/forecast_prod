@@ -111,7 +111,8 @@ $conn = null;
                 <div class="mb-3">
                     <a href="report_list.php" class="btn btn-outline-secondary">กลับ</a>
                     <button type="button" id="saveBtn" class="btn btn-success">บันทึกการแก้ไข</button>
-                    <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อ AT LEAO LLIT</button>
+                    <button type="button" id="showBrandSummaryBtn" class="btn btn-info ms-2">สรุปยอดตามยี่ห้อทั้งหมด</button>
+                    <button type="button" id="showBrandSummaryATLELITTBtn" class="btn btn-warning ms-2">สรุปยอด AT LEAO LLIT</button>
                 </div>
 
                 <div class="mb-3">
@@ -504,6 +505,113 @@ $conn = null;
                     $tbody.append(totalRowHtml);
 
                     // Show modal
+                    $('#brandSummaryModal').modal('show');
+
+                } catch(e) {
+                    alert('Error: ' + e.message);
+                }
+            });
+
+            // Show Summary AT LEAO LLIT
+            $('#showBrandSummaryATLELITTBtn').on('click', function() {
+                try {
+                    var filterBrands = ['AT', 'LEAO', 'LLIT'];
+                    var brandSums = {};
+                    filterBrands.forEach(function(brand) {
+                        brandSums[brand] = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
+                    });
+
+                    var totalSum = {avg:0, min:0, max:0, target:0, m1:0, m2:0, m3:0, avg3:0, forecast:0, compare1:0};
+
+                    var currentPage = table.page();
+                    var currentLength = table.page.len();
+                    table.page.len(-1).draw(false);
+
+                    function getNum($td) {
+                        if ($td.find('input').length > 0) {
+                            return parseFloat($td.find('input').val().replace(/,/g,'')) || 0;
+                        }
+                        return parseFloat($td.text().replace(/,/g,'')) || 0;
+                    }
+
+                    var uniqueTarget = null;
+                    table.$('tr').each(function() {
+                        var $tds = $(this).find('td');
+                        if ($tds.length === 0) return;
+
+                        var brand = $.trim($tds.eq(1).text());
+                        if (filterBrands.indexOf(brand) === -1) return;
+
+                        if (uniqueTarget === null) {
+                            uniqueTarget = getNum($tds.eq(5));
+                        }
+
+                        brandSums[brand].avg += getNum($tds.eq(2));
+                        brandSums[brand].min += getNum($tds.eq(3));
+                        brandSums[brand].max += getNum($tds.eq(4));
+                        brandSums[brand].m1 += getNum($tds.eq(6));
+                        brandSums[brand].m2 += getNum($tds.eq(7));
+                        brandSums[brand].m3 += getNum($tds.eq(8));
+                        brandSums[brand].avg3 += getNum($tds.eq(9));
+                        brandSums[brand].forecast += getNum($tds.eq(10));
+                        brandSums[brand].compare1 += getNum($tds.eq(11));
+
+                        totalSum.avg += getNum($tds.eq(2));
+                        totalSum.min += getNum($tds.eq(3));
+                        totalSum.max += getNum($tds.eq(4));
+                        totalSum.m1 += getNum($tds.eq(6));
+                        totalSum.m2 += getNum($tds.eq(7));
+                        totalSum.m3 += getNum($tds.eq(8));
+                        totalSum.avg3 += getNum($tds.eq(9));
+                        totalSum.forecast += getNum($tds.eq(10));
+                        totalSum.compare1 += getNum($tds.eq(11));
+                    });
+
+                    table.page.len(currentLength).draw(false);
+                    table.page(currentPage).draw(false);
+
+                    totalSum.target = (uniqueTarget !== null) ? uniqueTarget : 0;
+
+                    var $tbody = $('#brandSummaryTable tbody');
+                    $tbody.empty();
+
+                    filterBrands.forEach(function(brand) {
+                        var b = brandSums[brand];
+                        var comparePercent = b.avg3 !== 0 ? ((b.forecast / b.avg3) * 100) : 0;
+                        var rowHtml = '<tr>' +
+                            '<td>' + brand + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.avg) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.min) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.max) + '</td>' +
+                            '<td class="text-right">-</td>' +
+                            '<td class="text-right">' + numberFormat(b.m1) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.m2) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.m3) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.avg3) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.forecast) + '</td>' +
+                            '<td class="text-right">' + numberFormat(b.compare1) + '</td>' +
+                            '<td class="text-right">' + comparePercent.toFixed(2) + '%</td>' +
+                            '</tr>';
+                        $tbody.append(rowHtml);
+                    });
+
+                    var totalComparePercent = totalSum.avg3 !== 0 ? ((totalSum.forecast / totalSum.avg3) * 100) : 0;
+                    var totalRowHtml = '<tr class="fw-bold table-primary">' +
+                        '<td>รวม 3 ยี่ห้อ</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.avg) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.min) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.max) + '</td>' +
+                        '<td class="text-right"><input type="text" class="form-control form-control-sm brand-target-all" value="' + numberFormat(totalSum.target) + '" style="width:120px;text-align:right;"></td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m1) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m2) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.m3) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.avg3) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.forecast) + '</td>' +
+                        '<td class="text-right">' + numberFormat(totalSum.compare1) + '</td>' +
+                        '<td class="text-right">' + totalComparePercent.toFixed(2) + '%</td>' +
+                        '</tr>';
+                    $tbody.append(totalRowHtml);
+
                     $('#brandSummaryModal').modal('show');
 
                 } catch(e) {
