@@ -380,11 +380,11 @@ $conn = null;
                     for (var s = 0; s < selected.length; s++) {
                         var sv = selected[s];
                         if (sv === 'all' || sv === 'other') continue;
-                        if (sv.indexOf('/') === -1) {
-                            if (brandParts.indexOf(sv) !== -1) { isDirect = true; break; }
-                        } else {
-                            if (brand === sv) { isDirect = true; break; }
+                        var svParts = sv.split('/');
+                        for (var p = 0; p < svParts.length; p++) {
+                            if (brandParts.indexOf(svParts[p]) !== -1) { isDirect = true; break; }
                         }
+                        if (isDirect) break;
                     }
                     var knownBrands = ['AT','LEAO','LLIT','BS','FS','DT','ML','DS','DL','PR','VB','WESTLAKE','BS/FS','BS/FS/DT','DT/FS/DT','FS/DT'];
                     var isOther = selected.indexOf('other') !== -1 && !isDirect && knownBrands.indexOf(brand) === -1;
